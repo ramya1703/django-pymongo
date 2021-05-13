@@ -1,36 +1,48 @@
+
+
 # django-pymongo
 To show how we can connect django projects to mongodb using pymongo driver
 
-Django and MongoDB Setup
+## Django and MongoDB Setup
 
 To get the integration working, you should have a Django and MongoDB setup. If you have Python on your machine, you can install Django using pip. If you wish to install Django in a specific environment, instead of the whole system, you can create a virtual environment. Use pip/pip3 depending on your Python version: 
 
-Install:
+
+### Install:
+
 Windows:
+```bash
 pip install virtualenvwrapper-win
-
+```
 
 Mac OS / Linux:
+```bash
 pip install virtualenvwrapper
+```
 
+### Create:
 
-Create:
 Windows:
+```bash
 mkvirtualenv MyProjectEnvt
-
+```
 
 Mac OS / Linux:
+```bash
 virtualenv MyProjectEnvt
+```
 
+### Activate:
 
-Activate:
-Mac OS / Linux
+Mac OS / Linux:
+```bash
 source MyProjectEnvt/bin/activate
-
+```
 
 Windows:
+```bash
 workon MyProjectEnvt
-
+```
 
 To deactivate the virtual environment, you can just type the command deactivate
 
@@ -41,21 +53,24 @@ django-admin startproject <project_name>.
 
 
 For example,
+```bash
 C:\Users\myuser\project_files>django-admin startproject MyFirstDjangoProj
 C:\Users\myuser\project_files>cd MyFirstDjangoProj
-
+```
 
 To create an app, use the command, 
+```bash
 python manage.py startapp myfirstapp
-
+```
 
 If you are using the Python version >= 3.0, replace python with python3 in your commands.
 Inside the app, we can have many models that will be mapped to the collections and documents in MongoDB.
 Once you start the project, all the files will be available in the project folder. Start the server using the python manage.py runserver command
+
 That’s about our Django setup.
 If you don’t already have a MongoDB setup, use MongoDB Atlas, to make the most of cloud hosting. Atlas works seamlessly with all the major cloud providers.
 
-Connect Django and MongoDB using PyMongo
+## Connect Django and MongoDB using PyMongo
 
 PyMongo is the official Python driver for MongoDB. It is very efficient for writing JSON data to MongoDB and you can use MongoDB queries in the Python code itself. We can retrieve data in a dictionary like syntax using PyMongo.
 Install PyMongo easily using the pip/pip3 command:
@@ -70,6 +85,8 @@ pip install dnspython
 Using PyMongo, we can concurrently run multiple databases, by specifying the right database name to the connection instance.
 Let us create a sample pymongo session. There are two approaches for this:
 We can create a client in the utils file that can be used by any view that wants to interact with MongoDB. Create a utils.py file in your project folder (same location as manage.py) and instantiate the client:
+
+```python
 from pymongo import MongoClient
 def get_db_handle(db_name, host, port, username, password):
 
@@ -80,32 +97,36 @@ def get_db_handle(db_name, host, port, username, password):
                         )
     db_handle = client['db_name']
     return db_handle, client
-
+```
 
 This method can then bebe used in ./myfirstapp/view.py. 
 Another approach to get the connection is to use the connection_string:
+```python
 from pymongo import MongoClient
 client = pymongo.MongoClient('connection_string')
 db = client['db_name']
-
-
+```
 where,
+```python
 connection_string = mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majoritymongodb+srv://<username>:<password>@<ip-address>:<port>/<database_name>
+```
 
 
 For example,
+```python
 makemytrip_db = client['makemytrip']
 #collection object
 trips_collection = makemytrip_db['trips']
-
+```
 
 You may have seen the ‘Connection’ class being used in other code samples or tutorials – Connection has been deprecated, so don’t use it. 
 If you are on a default port and host, simply call MongoClient(). To connect to localhost, we can specify host and port explicitly as: MongoClient(‘localhost’, 27017) or use the URL format MongoClient(‘mongodb://localhost: 27017/’)
 Since we have created the client here, we need to comment the DATABASES section in settings.py file. Comment the same using triple quotes.
 
-Django and MongoDB Tutorial 
+## Django and MongoDB Tutorial 
 In this quick tutorial, we will demonstrate how to use pymongo to do simple CRUD operations. For this, let’s create a pymongo session:
 
+```python
 import pymongo
 connect_string = 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority' 
 
@@ -149,7 +170,7 @@ med_details = collection_name.find({})
 
 Print on the terminal
 for r in med_details:
-	print(r["common_name"])
+    print(r["common_name"])
 
 
 Update one document
@@ -159,3 +180,6 @@ Delete one document
 delete_data = collection_name.delete_one({'medicine_id':'RR000123456'})
 
 Connect to your MongoDB Atlas cluster to see the changes.
+```
+README.md
+Displaying README.md.
