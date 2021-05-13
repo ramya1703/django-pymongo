@@ -107,18 +107,18 @@ Django and MongoDB Tutorial
 In this quick tutorial, we will demonstrate how to use pymongo to do simple CRUD operations. For this, let’s create a pymongo session:
 
 import pymongo
-#connect_string = 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority' 
+connect_string = 'mongodb+srv://<username>:<password>@<atlas cluster>/<myFirstDatabase>?retryWrites=true&w=majority' 
 
 from django.conf import settings
 my_client = pymongo.MongoClient(connect_string)
 
-# First define the database name
+Define the database name
 dbname = my_client['sample_medicines']
 
-# Now get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
+Get/create collection name (remember that you will see the database in your mongodb cluster only after you create a collection
 collection_name = dbname["medicinedetails"]
 
-#let's create two documents
+Create two documents
 medicine_1 = {
     "medicine_id": "RR000123456",
     "common_name" : "Paracetamol",
@@ -135,27 +135,27 @@ medicine_2 = {
 }
 
 
-# Create the documents
+Insert the documents
 collection_name.insert_many([medicine_1,medicine_2])
 
 
-# Check the count
+Check the count
 count = collection_name.count()
 print(count)
 
-# Read the documents
+Read the documents
 med_details = collection_name.find({})
 
 
-# Print on the terminal
+Print on the terminal
 for r in med_details:
 	print(r["common_name"])
 
 
-# Update one document
+Update one document
 update_data = collection_name.update_one({'medicine_id':'RR000123456'}, {'$set':{'common_name':'Paracetamol 500'}})
 
-# Delete one document
+Delete one document
 delete_data = collection_name.delete_one({'medicine_id':'RR000123456'})
 
 Connect to your MongoDB Atlas cluster to see the changes.
